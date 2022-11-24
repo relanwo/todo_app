@@ -44,6 +44,7 @@ export default class Task extends Component {
             <span className="description">{itemProps.text}</span>
             <span className="created">
               created
+              {' '}
               {itemProps.timeGone}
               {' '}
               ago
