@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './new-task-form.css';
 
 export default class NewTaskForm extends Component {
-  static defaultProps = {
-    onLabelChange: () => {},
-    onSubmit: () => {},
-  };
-
-  state = {
-    label: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      label: '',
+    };
+  }
 
   onLabelChange = (e) => {
     this.setState({
@@ -19,10 +18,12 @@ export default class NewTaskForm extends Component {
   };
 
   onSubmit = (e) => {
+    const { label } = this.state;
+    const { onItemAdded } = this.props;
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (this.state.label !== '') {
-        this.props.onItemAdded(this.state.label);
+      if (label !== '') {
+        onItemAdded(label);
       }
       this.setState({
         label: '',
@@ -31,6 +32,7 @@ export default class NewTaskForm extends Component {
   };
 
   render() {
+    const { label } = this.state;
     return (
       <header className="header">
         <h1>todos</h1>
@@ -39,10 +41,13 @@ export default class NewTaskForm extends Component {
           onChange={this.onLabelChange}
           onKeyDown={this.onSubmit}
           placeholder="What needs to be done?"
-          autoFocus
-          value={this.state.label}
+          value={label}
         />
       </header>
     );
   }
 }
+
+NewTaskForm.propTypes = {
+  onItemAdded: PropTypes.func.isRequired,
+};
