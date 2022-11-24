@@ -39,8 +39,8 @@ export default class Task extends Component {
     return (
       <li className={fieldClass}>
         <div className="view">
-          <input className="toggle" id="temp-id" type="checkbox" onClick={onToggleDone} />
-          <label htmlFor="temp-id">
+          <input className="toggle" id="temp-ide" type="checkbox" onClick={onToggleDone} />
+          <label htmlFor="temp-ide">
             <span className="description">{itemProps.text}</span>
             <span className="created">
               created
