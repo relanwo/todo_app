@@ -19,6 +19,7 @@
     "no-duplicate-imports": "error",
     "no-empty-function": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx"] }],
-    "linebreak-style": ["error", "windows"]
+    "linebreak-style": ["error", "windows"],
+    "max-len": "off"
   }
 }

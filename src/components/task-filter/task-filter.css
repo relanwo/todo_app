@@ -1,0 +1,58 @@
+.filters .radio-wrapper input[type=radio] {
+  display: none;
+  /* opacity: 0; */
+}
+
+.filters .radio-wrapper {
+  display: inline-block;
+  margin: -5px;
+  padding: 4px 12px;
+  margin-bottom: 0;
+  /* font-size: 14px; */
+  line-height: 22px;
+  /* color: #333; */
+  text-align: center;
+  /* text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); */
+  vertical-align: middle;
+  cursor: pointer;
+  /* background-color: #f5f5f5; */
+  background-repeat: repeat-x;
+}
+
+/* .filters .radio-wrapper input[type=radio]:checked+label {
+  /* background-image: none; */
+  /* outline: 0; */
+  /* background-color: #e0e0e0; */
+
+
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  right: 0;
+  left: 0;
+}
+
+.filters .radio-wrapper {
+  display: inline;
+  cursor: default;
+}
+
+.filters .radio-wrapper {
+  display: inline-block;
+  color: inherit;
+  margin: 3px;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.filters .radio-wrapper:hover {
+  border-color: rgba(175, 47, 47, 0.1);
+  cursor: pointer;
+}
+
+.filters .radio-wrapper:has(input.selected) {
+  border-color: rgba(175, 47, 47, 0.2);
+}

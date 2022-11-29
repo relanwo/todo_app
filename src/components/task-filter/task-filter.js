@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
@@ -12,26 +14,38 @@ export default class TaskFilter extends Component {
   ];
 
   render() {
-    const { filter, onFilterChange } = this.props;
+    const { id, filter, onFilterChange } = this.props;
 
     const buttons = this.buttons.map(({ name, label }) => {
       const isActive = filter === name;
       const filterClass = isActive ? 'selected' : '';
 
       return (
-        <li key={name}>
-          <button type="button" className={filterClass} onClick={() => onFilterChange(name)}>
-            {label}
-          </button>
-        </li>
+        <div
+          key={name}
+          className="radio-wrapper"
+          onClick={() => onFilterChange(name)}
+        >
+          <input
+            // value={label}
+            id={id}
+            type="radio"
+            className={filterClass}
+
+          />
+          <label htmlFor={id}>{label}</label>
+          {/* {label}
+          </input> */}
+        </div>
       );
     });
 
-    return <ul className="filters">{buttons}</ul>;
+    return <div className="filters">{buttons}</div>;
   }
 }
 
 TaskFilter.propTypes = {
+  id: PropTypes.string.isRequired,
   filter: PropTypes.oneOf(['all', 'active', 'completed']).isRequired,
   onFilterChange: PropTypes.func.isRequired,
 };

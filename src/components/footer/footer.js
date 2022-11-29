@@ -14,7 +14,7 @@ function Footer({
         {' '}
         items left
       </span>
-      <TaskFilter filter={filter} onFilterChange={onFilterChange} />
+      <TaskFilter id={toDo.created} filter={filter} onFilterChange={onFilterChange} />
       <button className="clear-completed" type="button" aria-label="button" onClick={onCompletedDeleted}>
         Clear completed
       </button>
