@@ -35,7 +35,6 @@ export default class NewTaskForm extends Component {
     const { label } = this.state;
     return (
       <header className="header">
-        <h1>todos</h1>
         <input
           className="new-todo"
           onChange={this.onLabelChange}

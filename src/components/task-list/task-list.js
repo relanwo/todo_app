@@ -21,7 +21,7 @@ function TaskList({
         fieldClass: PropTypes.oneOf(['active', 'editing', 'completed']),
         created: PropTypes.string,
         timeGone: PropTypes.string,
-        id: PropTypes.number,
+        // id: PropTypes.number,
       }),
     ).isRequired,
     onDeleted: PropTypes.func,
@@ -31,18 +31,19 @@ function TaskList({
   };
 
   const elements = todos.map((item) => {
-    const { id, ...itemProps } = item;
+    const { created, ...itemProps } = item;
     return (
-      <Task
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...itemProps}
-        key={id}
-        id={id}
-        onDeleted={() => onDeleted(id)}
-        onToggleEdit={() => onToggleEdit(id)}
-        onToggleDone={() => onToggleDone(id)}
-        onSubmit={onSubmit}
-      />
+      <li key={created} className={itemProps.fieldClass}>
+        <Task
+          created={created}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...itemProps}
+          onDeleted={() => onDeleted(created)}
+          onToggleEdit={() => onToggleEdit(created)}
+          onToggleDone={() => onToggleDone(created)}
+          onSubmit={onSubmit}
+        />
+      </li>
     );
   });
   return <ul className="todo-list">{elements}</ul>;
