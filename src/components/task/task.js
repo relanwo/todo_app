@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
@@ -16,10 +15,7 @@ export default class Task extends Component {
   }
 
   componentDidMount() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      10000,
-    );
+    this.timerID = setInterval(() => this.tick(), 10000);
   }
 
   componentWillUnmount() {
@@ -72,6 +68,7 @@ export default class Task extends Component {
             <span className="description">{itemProps.text}</span>
             <span className="created">
               created
+              {' '}
               {formatDistance(date, Number(itemProps.created))}
               {' '}
               ago
@@ -88,9 +85,6 @@ export default class Task extends Component {
 
 Task.propTypes = {
   fieldClass: PropTypes.oneOf(['active', 'editing', 'completed']).isRequired,
-  // itemProps: PropTypes.arrayOf.isRequired,
-  // id: PropTypes.number.isRequired,
-  // id: PropTypes.string.isRequired,
   onDeleted: PropTypes.func.isRequired,
   onToggleEdit: PropTypes.func.isRequired,
   onToggleDone: PropTypes.func.isRequired,
