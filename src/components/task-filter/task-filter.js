@@ -16,7 +16,7 @@ export default class TaskFilter extends Component {
   render() {
     const { id, filter, onFilterChange } = this.props;
 
-    const buttons = this.buttons.map(({ name, label }) => {
+    const filterButtons = this.buttons.map(({ name, label }) => {
       const isActive = filter === name;
       const filterClass = isActive ? 'selected' : '';
 
@@ -40,7 +40,7 @@ export default class TaskFilter extends Component {
       );
     });
 
-    return <div className="filters">{buttons}</div>;
+    return <div className="filters">{filterButtons}</div>;
   }
 }
 
