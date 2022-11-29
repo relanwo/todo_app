@@ -68,7 +68,6 @@ export default class Task extends Component {
             <span className="description">{itemProps.text}</span>
             <span className="created">
               created
-              {' '}
               {formatDistance(date, Number(itemProps.created))}
               {' '}
               ago

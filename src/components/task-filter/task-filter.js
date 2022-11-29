@@ -21,17 +21,12 @@ export default class TaskFilter extends Component {
       const filterClass = isActive ? 'selected' : '';
 
       return (
-        <div
-          key={name}
-          className="radio-wrapper"
-          onClick={() => onFilterChange(name)}
-        >
+        <div key={name} className="radio-wrapper" onClick={() => onFilterChange(name)}>
           <input
             // value={label}
             id={id}
             type="radio"
             className={filterClass}
-
           />
           <label htmlFor={id}>{label}</label>
           {/* {label}
