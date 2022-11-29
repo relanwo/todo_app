@@ -1,6 +1,8 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
+
 import { formatDistance } from 'date-fns';
 
 import './task.css';
@@ -70,7 +72,6 @@ export default class Task extends Component {
             <span className="description">{itemProps.text}</span>
             <span className="created">
               created
-              {' '}
               {formatDistance(date, Number(itemProps.created))}
               {' '}
               ago
