@@ -8,21 +8,12 @@
   margin: -5px;
   padding: 4px 12px;
   margin-bottom: 0;
-  /* font-size: 14px; */
   line-height: 22px;
-  /* color: #333; */
   text-align: center;
-  /* text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); */
   vertical-align: middle;
   cursor: pointer;
-  /* background-color: #f5f5f5; */
   background-repeat: repeat-x;
 }
-
-/* .filters .radio-wrapper input[type=radio]:checked+label {
-  /* background-image: none; */
-/* outline: 0; */
-/* background-color: #e0e0e0; */
 
 .filters {
   margin: 0;
