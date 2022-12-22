@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-// import PropTypes from 'prop-types';
-
 import { format } from 'date-fns';
 
 export default class Timer extends Component {
@@ -9,23 +7,22 @@ export default class Timer extends Component {
     super(props);
     this.state = {
       date: 0,
+      isCounting: false,
     };
   }
 
-  start() {
-    // this.tick();
-    // eslint-disable-next-line react/destructuring-assignment, no-console
-    // console.log(this.state.date);
-    this.timerID = setInterval(async () => this.tick(), 1000);
-  }
+  start = (prevState) => {
+    const { isCounting } = this.state;
+    if (isCounting !== prevState.isCounting) {
+      this.setState({ isCounting: true });
+      this.timerID = setInterval(() => this.tick(), 1000);
+    }
+  };
 
-  // componentDidUpdate() {
-  //   this.timerID = setInterval(async () => this.tick(), 1000);
-  // }
-
-  finish() {
+  stop = () => {
     clearInterval(this.timerID);
-  }
+    this.setState({ isCounting: false });
+  };
 
   tick() {
     this.setState(({ date }) => ({
@@ -35,26 +32,25 @@ export default class Timer extends Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    const { date } = this.state;
+    const { date, isCounting } = this.state;
 
     return (
       <span className="description">
-        <button
-          className="icon icon-play"
-          type="button"
-          aria-label="play"
-          // eslint-disable-next-line no-console
-          // onClick={console.log('hi')}
-          onClick={this.start}
-        />
-        <button
-          className="icon icon-pause"
-          type="button"
-          aria-label="pause"
-          // eslint-disable-next-line no-console
-          // onClick={console.log('bye')}
-          onClick={this.finish}
-        />
+        {isCounting ? (
+          <button
+            type="button"
+            className="icon icon-pause"
+            aria-label="pause"
+            onClick={this.stop}
+          />
+        ) : (
+          <button
+            type="button"
+            className="icon icon-play"
+            aria-label="play"
+            onClick={this.start}
+          />
+        )}
         {format(new Date(date), 'mm:ss')}
       </span>
     );
