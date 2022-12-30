@@ -7,42 +7,74 @@ export default class NewTaskForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      label: '',
+      taskInput: '',
+      minInput: '',
+      secInput: '',
     };
   }
 
-  onLabelChange = (e) => {
+  onTaskChange = (e) => {
     this.setState({
-      label: e.target.value,
+      taskInput: e.target.value,
+    });
+  };
+
+  onMinChange = (e) => {
+    this.setState({
+      minInput: e.target.value,
+    });
+  };
+
+  onSecChange = (e) => {
+    this.setState({
+      secInput: e.target.value,
     });
   };
 
   onSubmit = (e) => {
-    const { label } = this.state;
+    const { taskInput, minInput, secInput } = this.state;
     const { onItemAdded } = this.props;
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (label !== '') {
-        onItemAdded(label);
+      if (taskInput !== '') {
+        onItemAdded(taskInput, minInput, secInput);
       }
       this.setState({
-        label: '',
+        taskInput: '',
+        minInput: '',
+        secInput: '',
       });
     }
   };
 
   render() {
-    const { label } = this.state;
+    const { taskInput, minInput, secInput } = this.state;
     return (
-      <header className="header">
+      // <header className="header">
+      <form className="new-todo-form header">
         <input
           className="new-todo"
-          onChange={this.onLabelChange}
+          onChange={this.onTaskChange}
           onKeyDown={this.onSubmit}
           placeholder="What needs to be done?"
-          value={label}
+          value={taskInput}
         />
-      </header>
+        <input
+          className="new-todo-form__timer"
+          onChange={this.onMinChange}
+          onKeyDown={this.onSubmit}
+          placeholder="Min"
+          value={minInput}
+        />
+        <input
+          className="new-todo-form__timer"
+          onChange={this.onSecChange}
+          onKeyDown={this.onSubmit}
+          placeholder="Sec"
+          value={secInput}
+        />
+      </form>
+      // {/* </header> */}
     );
   }
 }

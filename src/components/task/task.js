@@ -17,7 +17,8 @@ export default class Task extends Component {
 
   render() {
     const {
-      onDeleted, onToggleEdit, onToggleDone, fieldClass, onSubmit, ...itemProps
+      // eslint-disable-next-line react/prop-types
+      onDeleted, onToggleEdit, onToggleDone, fieldClass, onSubmit, startTimer, stopTimer, created, ...itemProps
     } = this.props;
 
     let input;
@@ -31,8 +32,8 @@ export default class Task extends Component {
           onChange={this.onValueChange}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              onSubmit(itemProps.created, e.target.value);
-              onToggleEdit(itemProps.created);
+              onSubmit(created, e.target.value);
+              onToggleEdit(created);
             }
           }}
         />
@@ -41,12 +42,17 @@ export default class Task extends Component {
 
     return (
       <div className="view-wrapper">
-        <div className="view">
+        <div className={`view ${fieldClass}`}>
           <input className="toggle" id="temp-ide" type="checkbox" onClick={onToggleDone} />
           <label htmlFor="temp-ide">
             <span className="title">{itemProps.text}</span>
-            <Timer />
-            <CreatedTimer created={itemProps.created} />
+            <Timer
+              time={itemProps.time}
+              created={created}
+              startTimer={() => startTimer(created)}
+              stopTimer={() => stopTimer(created)}
+            />
+            <CreatedTimer created={created} />
           </label>
           <button type="button" aria-label="edit" className="icon icon-edit" onClick={onToggleEdit} />
           <button type="button" aria-label="destroy" className="icon icon-destroy" onClick={onDeleted} />
@@ -58,7 +64,7 @@ export default class Task extends Component {
 }
 
 Task.propTypes = {
-  fieldClass: PropTypes.oneOf(['active', 'editing', 'completed']).isRequired,
+  // fieldClass: PropTypes.oneOf(['active', 'editing', 'completed']).isRequired,
   onDeleted: PropTypes.func.isRequired,
   onToggleEdit: PropTypes.func.isRequired,
   onToggleDone: PropTypes.func.isRequired,

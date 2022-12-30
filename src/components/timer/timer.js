@@ -1,62 +1,53 @@
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
+// import { TimerContextConsumer } from '../timer-context/timer-context';
 
 export default class Timer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: 0,
-      isCounting: false,
-    };
-  }
-
-  start = (prevState) => {
-    const { isCounting } = this.state;
-    if (isCounting !== prevState.isCounting) {
-      this.setState({ isCounting: true });
-      this.timerID = setInterval(() => this.tick(), 1000);
-    }
-  };
-
-  stop = () => {
-    clearInterval(this.timerID);
-    this.setState({ isCounting: false });
-  };
-
-  tick() {
-    this.setState(({ date }) => ({
-      date: date + 1000,
-    }));
-  }
-
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { date, isCounting } = this.state;
+    const {
+      time, startTimer, stopTimer,
+    } = this.props;
 
     return (
+    // <TimerContextConsumer>
+    //   {(timerArr) => {
+    //     console.log(timerArr);
+    //     return (
       <span className="description">
-        {isCounting ? (
-          <button
-            type="button"
-            className="icon icon-pause"
-            aria-label="pause"
-            onClick={this.stop}
-          />
-        ) : (
-          <button
-            type="button"
-            className="icon icon-play"
-            aria-label="play"
-            onClick={this.start}
-          />
-        )}
-        {format(new Date(date), 'mm:ss')}
+        {/* {pause ? ( */}
+        <button
+          type="button"
+          className="icon icon-play"
+          aria-label="play"
+            // onClick={start}
+          onClick={startTimer}
+        />
+        <button
+          type="button"
+          className="icon icon-pause"
+          aria-label="pause"
+            // onClick={stop}
+          onClick={stopTimer}
+        />
+        {/* ) : ( */}
+
+        {/* )} */}
+        {` ${format(new Date(time), 'mm:ss')}`}
       </span>
+    //     );
+    //   }}
+    // </TimerContextConsumer>
     );
   }
 }
 
 // Timer.propTypes = {
 //   // created: PropTypes.number.isRequired,
+// min:
 // };
