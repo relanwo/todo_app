@@ -1,45 +1,27 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { formatDistance } from 'date-fns';
 
-export default class CreatedTimer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date(),
-    };
-  }
+function CreatedTimer({ created }) {
+  const [date, setDate] = useState(new Date());
 
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 10000);
-  }
+  useEffect(() => {
+    const timerID = setInterval((() => setDate(new Date())), 1000);
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
+    return () => clearInterval(timerID);
+  }, []);
 
-  tick() {
-    this.setState({
-      date: new Date(),
-    });
-  }
-
-  render() {
-    const {
-      created,
-    } = this.props;
-    const { date } = this.state;
-
-    return (
-      <span className="description">
-        {`created ${formatDistance(date, Number(created))} ago`}
-      </span>
-    );
-  }
+  return (
+    <span className="description">
+      {`created ${formatDistance(date, Number(created))} ago`}
+    </span>
+  );
 }
 
 CreatedTimer.propTypes = {
   created: PropTypes.string.isRequired,
 };
+
+export default CreatedTimer;

@@ -1,100 +1,83 @@
-/* eslint-disable react/sort-comp */
 /* eslint-disable no-param-reassign */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-plusplus */
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './app.css';
 
-import { isThursday } from 'date-fns';
 import NewTaskForm from '../new-task-form/new-task-form';
 import TaskList from '../task-list/task-list';
 import Footer from '../footer/footer';
-// import { TimerContextProvider } from '../timer-context/timer-context';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todoData: [
-        this.createTodoItem('sample task 1', '1669190980663', '20', '00'),
-        this.createTodoItem('sample task 2', '1669190480369', '10', '00'),
-        this.createTodoItem('sample task 3', '1669190450769', '00', '30'),
-      ],
-      filter: 'all',
+function App() {
+  function createTodoItem(text, created, min, sec) {
+    return {
+      text,
+      fieldClass: 'active',
+      created,
+      time: (min * 60 + sec) * 1000,
+      pause: true,
     };
   }
 
-  deleteItem = (id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.created === id);
+  const [todoData, setTodoData] = useState([
+    createTodoItem('sample task 1', '1669190980663', '20', '00'),
+    createTodoItem('sample task 2', '1669190480369', '10', '00'),
+    createTodoItem('sample task 3', '1669190450769', '00', '30'),
+  ]);
+  const [filter, setFilter] = useState('all');
 
-      const newArray = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
-      return {
-        todoData: newArray,
-      };
+  const deleteItem = (id) => {
+    const idx = todoData.findIndex((el) => el.created === id);
+    const newArray = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
+    setTodoData(newArray);
+  };
+
+  const addItem = (text, min, sec) => {
+    const newItem = createTodoItem(text, Date.now().toString(), min, sec);
+    const newArray = [...todoData, newItem];
+    setTodoData(newArray);
+  };
+
+  function toggleProperty(arr, id, propClass) {
+    const idx = arr.findIndex((el) => el.created === id);
+
+    const oldItem = arr[idx];
+    const toggledClass = oldItem.fieldClass === 'active' ? propClass : 'active';
+    const newItem = { ...oldItem, fieldClass: toggledClass };
+
+    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
+  }
+
+  const onToggleDone = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'completed'));
+  };
+
+  const onToggleEdit = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'editing'));
+  };
+
+  const onSubmit = (id, text) => {
+    const newArr = todoData.map((item) => {
+      const newItem = item;
+      if (item.created === id) {
+        newItem.text = text;
+      }
+      return newItem;
     });
+    setTodoData(newArr);
   };
 
-  addItem = (text, min, sec) => {
-    // generate id
-    const newItem = this.createTodoItem(text, Date.now().toString(), min, sec);
-
-    // add item
-    this.setState(({ todoData }) => {
-      const newArray = [...todoData, newItem];
-
-      return {
-        todoData: newArray,
-      };
-    });
+  const onCompletedDeleted = () => {
+    const uncompletedArray = todoData.filter((item) => item.fieldClass !== 'completed');
+    uncompletedArray.forEach((item) => deleteItem(item.created));
+    setTodoData(uncompletedArray);
   };
 
-  onToggleDone = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: this.toggleProperty(todoData, id, 'completed'),
-    }));
+  const onFilterChange = (newFilter) => {
+    setFilter(newFilter);
   };
 
-  onToggleEdit = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: this.toggleProperty(todoData, id, 'editing'),
-    }));
-  };
-
-  onSubmit = (id, text) => {
-    this.setState(({ todoData }) => {
-      const newArr = todoData.map((item) => {
-        const newItem = item;
-        if (item.created === id) {
-          newItem.text = text;
-        }
-        return newItem;
-      });
-      return {
-        todoData: newArr,
-      };
-    });
-  };
-
-  onCompletedDeleted = () => {
-    this.setState(({ todoData }) => {
-      const completedArray = todoData.filter((item) => item.fieldClass === 'completed');
-
-      completedArray.forEach((item) => this.deleteItem(item.created));
-    });
-  };
-
-  onFilterChange = (filter) => {
-    this.setState({ filter });
-  };
-
-  filter(items, filter) {
-    switch (filter) {
+  function filterFunc(items, chosenFilter) {
+    switch (chosenFilter) {
       case 'all':
         return items;
       case 'active':
@@ -105,134 +88,71 @@ export default class App extends Component {
         return items;
     }
   }
-  // eslint-disable-next-line consistent-return
-  // filter(items, filter) {
-  //   switch (filter) {
-  //     case 'all':
-  //       return items;
-  //     case 'active':
-  //       items.filter((item) => {
-  //         if (item.fieldClass !== 'active') {
-  //           item.fieldClass += 'none';
-  //         }
-  //         return items;
-  //       });
-  //       break;
-  //     case 'completed':
-  //       return items.filter((item) => {
-  //         if (item.fieldClass !== 'completed') {
-  //           item.fieldClass += 'none';
-  //         }
-  //         return items;
-  //       });
-  //     default:
-  //       return items;
-  //   }
-  // }
 
-  // eslint-disable-next-line react/no-unused-class-component-methods
-  toggleProperty(arr, id, propClass) {
-    const idx = arr.findIndex((el) => el.created === id);
+  const startTimer = (id) => {
+    const idx = todoData.findIndex((el) => el.created === id);
+    const newObj = [{ ...todoData[idx], pause: false }];
+    const newData = [...todoData.slice(0, idx), ...newObj, ...todoData.slice(idx + 1)];
+    setTodoData(newData);
+  };
 
-    // 1. update object
-    const oldItem = arr[idx];
-    const toggledClass = oldItem.fieldClass === 'active' ? propClass : 'active';
-    const newItem = { ...oldItem, fieldClass: toggledClass };
+  const stopTimer = (id) => {
+    const idx = todoData.findIndex((el) => el.created === id);
+    const newObj = [{ ...todoData[idx], pause: true }];
+    const newData = [...todoData.slice(0, idx), ...newObj, ...todoData.slice(idx + 1)];
+    setTodoData(newData);
+  };
 
-    // 2. construct new array
-    return [...arr.slice(0, idx), newItem, ...arr.slice(idx + 1)];
-  }
-
-  createTodoItem(text, created, min, sec) {
-    return {
-      text,
-      fieldClass: 'active',
-      created,
-      time: (min * 60 + sec) * 1000,
-      pause: true,
-    };
-  }
-
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      this.setState(({ todoData }) => {
-        const newArr = todoData.map((item) => {
-          if (!item.pause) {
-            item.time -= 1000;
-            if (item.time === 0) {
-              this.stopTimer(item.created);
-              item.fieldClass = 'completed';
-            }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newArr = todoData.map((item) => {
+        if (!item.pause) {
+          item.time -= 1000;
+          if (item.time === 0) {
+            stopTimer(item.created);
+            item.fieldClass = 'completed';
           }
-          return item;
-        });
-        return {
-          todoData: newArr,
-        };
+        }
+        return item;
       });
+      setTodoData(newArr);
     }, 1000);
-  }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [todoData]);
 
-  startTimer = (id) => {
-    console.log('start');
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.created === id);
-      const newObj = [{ ...todoData[idx], pause: false }];
-      const newData = [...todoData.slice(0, idx), ...newObj, ...todoData.slice(idx + 1)];
-      return {
-        todoData: newData,
-      };
-    });
-  };
+  const visibleItems = filterFunc(todoData, filter);
+  const todoCount = todoData.filter((el) => el.fieldClass !== 'completed').length;
 
-  stopTimer = (id) => {
-    console.log('stop');
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.created === id);
-      const newObj = [{ ...todoData[idx], pause: true }];
-      const newData = [...todoData.slice(0, idx), ...newObj, ...todoData.slice(idx + 1)];
-      return {
-        todoData: newData,
-      };
-    });
-  };
-
-  render() {
-    const { todoData, filter, timerArr } = this.state;
-
-    const visibleItems = this.filter(todoData, filter);
-    const todoCount = todoData.filter((el) => el.fieldClass !== 'completed').length;
-
-    return (
-      <div className="todoapp">
-        <h1>todos</h1>
-        <main className="main">
-          <NewTaskForm onItemAdded={this.addItem} />
-          {/* <TimerContextProvider value={timerArr}> */}
-          <TaskList
-            todos={visibleItems}
-            filter={filter}
-            onDeleted={this.deleteItem}
-            onToggleEdit={this.onToggleEdit}
-            onToggleDone={this.onToggleDone}
-            onSubmit={this.onSubmit}
-            timerArr={timerArr}
-            startTimer={this.startTimer}
-            stopTimer={this.stopTimer}
-          />
-          {/* </TimerContextProvider> */}
-          <Footer
-            toDo={todoCount}
-            onCompletedDeleted={this.onCompletedDeleted}
-            filter={filter}
-            onFilterChange={this.onFilterChange}
-          />
-        </main>
-      </div>
-    );
-  }
+  return (
+    <div className="todoapp">
+      <h1>todos</h1>
+      <main className="main">
+        <NewTaskForm onItemAdded={addItem} />
+        {/* <TimerContextProvider value={timerArr}> */}
+        <TaskList
+          todos={visibleItems}
+          filter={filter}
+          onDeleted={deleteItem}
+          onToggleEdit={onToggleEdit}
+          onToggleDone={onToggleDone}
+          onSubmit={onSubmit}
+          startTimer={startTimer}
+          stopTimer={stopTimer}
+        />
+        {/* </TimerContextProvider> */}
+        <Footer
+          toDo={todoCount}
+          onCompletedDeleted={onCompletedDeleted}
+          filter={filter}
+          onFilterChange={onFilterChange}
+        />
+      </main>
+    </div>
+  );
+  // }
 }
+
+export default App;
